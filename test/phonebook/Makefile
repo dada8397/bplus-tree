@@ -4,7 +4,7 @@ CPPFLAGS_common ?= -I../../include -Wall -g
 CFLAGS_orig = -O0
 CFLAGS_opt  = -O0
 
-MODE ?= debug
+MODE ?= release
 SNAPPY ?= 1
 
 EXEC = phonebook_orig phonebook_opt phonebook_hash phonebook_trie phonebook_rbtree phonebook_bptree phonebook_bptree_bulk
@@ -39,13 +39,13 @@ phonebook_rbtree: $(SRCS_common) phonebook_rbtree.c phonebook_rbtree.h
 
 phonebook_bptree: $(SRCS_common) ../../bplus.a
 	$(CXX) $(CPPFLAGS_common) $(CFLAGS_opt) \
-		-DIMPL="\"phonebook_orig.h\"" -DBPTREE -o $@ \
-		$(SRCS_common) ../../bplus.a -lpthread
+		-DIMPL="\"phonebook_orig.h\"" -DBPTREE -pthread -o $@ \
+		$(SRCS_common) ../../bplus.a
 
 phonebook_bptree_bulk: $(SRCS_common) ../../bplus.a
 	$(CXX) $(CPPFLAGS_common) $(CFLAGS_opt) \
-		-DIMPL="\"phonebook_orig.h\"" -DBPTREE_BULK -o $@ \
-		$(SRCS_common) ../../bplus.a -lpthread
+		-DIMPL="\"phonebook_orig.h\"" -DBPTREE_BULK -pthread -o $@ \
+		$(SRCS_common) ../../bplus.a
 
 ../../bplus.a:
 	$(MAKE) -C ../.. MODE=$(MODE) SNAPPY=$(SNAPPY)
